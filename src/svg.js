@@ -81,16 +81,19 @@ function svgTower(x, y, activeLevel, opacity = 1.0) {
     let tower = svgGroup();
     let moon = svgCircle(x + 80, x + 100, 80, "red");
     tower.appendChild(moon);
+    let floors = [];
+    let floorBgs = [];
     for (let i = 0; i < _towerLevels.length; i++) {
         let l = x + _towerLevels[i][0] - 60;
         let r = x + _towerLevels[i][1] - 60;
         let t = i * 30 + 19;
         let b = t + 30;
-        let s = `M ${l} ${t} L ${r} ${t} L ${r} ${b} L ${l} ${b} Z`;
+        floorBgs.push(svgRect(l - 2, t - 2, r - l + 4, b - t + 4, "red"));
         let color = (i === activeLevel) ? "yellow" : "#080001";
-        let floor = svgPath(s, color);
-        tower.appendChild(floor);
+        floors.push(svgRect(l, t, r - l, b - t, color));
     }
+    floorBgs.forEach(bg => tower.appendChild(bg));
+    floors.forEach(f => tower.appendChild(f));
     tower.setAttribute("opacity", opacity);
     return tower;
 }
