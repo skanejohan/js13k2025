@@ -224,7 +224,12 @@ function _endMaze(newGameState) {
         }
         else {
             lives--;
-            message = (heartAttack > 100 ? "your heart collapsed from the stress" : "you got stuck in the maze") + `... but you get another attempt... you have ${lives} ${lives == 1 ? "life" : "lives"} left`;
+            let reason = heartAttack > 100 ? "your heart collapsed from the stress" : "you got stuck in the maze";
+            let youHave = lives == 1 ? "you have 1 life left" : `you have ${lives} lives left`;
+            if (lives == 0) {
+                youHave = "";
+            }
+            message = `${reason}... but you get another attempt... ${youHave}`;
         }
         play(levelLostSound);
     }

@@ -78,27 +78,42 @@ function svgHorseshoe(x, y) {
 }
 
 function svgTower(x, y, activeLevel, opacity = 1.0) {
-    let tower = svgGroup();
+    let scene = svgGroup();
     let moon = svgCircle(x + 80, x + 100, 80, "red");
-    tower.appendChild(moon);
-    let floors = [];
-    let floorBgs = [];
-    for (let i = 0; i < _towerLevels.length; i++) {
-        let l = x + _towerLevels[i][0] - 60;
-        let r = x + _towerLevels[i][1] - 60;
-        let t = i * 30 + 19;
-        let b = t + 30;
-        floorBgs.push(svgRect(l - 2, t - 2, r - l + 4, b - t + 4, "red"));
-        let color = (i === activeLevel) ? "yellow" : "#080001";
-        floors.push(svgRect(l, t, r - l, b - t, color));
+    scene.appendChild(moon);
+
+    let s = `M ${_t[0][0]} ${0} `
+    s += `L ${_t[0][1]} ${0} `; // Top
+    for (let i = 0; i < 19; i++) { // Right
+        s += `L ${_t[i][1]} ${(i+1)*30} `;
+        s += `L ${_t[i+1][1]} ${(i+1)*30} `;
     }
-    floorBgs.forEach(bg => tower.appendChild(bg));
-    floors.forEach(f => tower.appendChild(f));
-    tower.setAttribute("opacity", opacity);
-    return tower;
+    s += `L ${_t[19][0]} ${19*30} `; // Bottom
+    for (let i = 19; i > 0; i--) { // Left
+        s += `L ${_t[i][0]} ${i*30} `;
+        s += `L ${_t[i-1][0]} ${i*30} `;
+    }
+    s += "Z";
+
+    let towerBlock = svgPath(s, "#080001");
+    let towerOutline = svgPath(s, "none");
+    towerOutline.setAttribute("stroke", "#B50405");
+    towerOutline.setAttribute("stroke-width", "2");
+
+    let tower = svgGroup();
+    tower.appendChild(towerBlock);
+    if (activeLevel != undefined) {
+        tower.appendChild(svgRect(_t[activeLevel][0], activeLevel * 30, _t[activeLevel][1] - _t[activeLevel][0], 30, "yellow"));
+    }
+    tower.appendChild(towerOutline);
+    tower.setAttribute("transform", `translate(${x-60} ${y+19})`);
+    scene.appendChild(tower);
+
+    scene.setAttribute("opacity", opacity);
+    return scene;
 }
 
-let _towerLevels = [
+let _t = [
     [40, 130],
     [40, 140],
     [40, 140],
