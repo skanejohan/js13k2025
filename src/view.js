@@ -97,17 +97,7 @@ function noOfVisibleOpponents() {
 }
 
 function updateVisibleCells() {
-    // for(let i = 0; i < visibleCellsSvg.length; i++) {
-    //     svg.removeChild(visibleCellsSvg[i]);
-    // }
-    // visibleCellsSvg = [];
-
     visibleCells = visibleFrom(level.avatar.cellX, level.avatar.cellY);
-    // for (let cell of visibleCells) {
-    //     let svgCell = svgRect(cell.x * side, cell.y * side, side, side, "rgba(255, 255, 255, 0.15)");
-    //     visibleCellsSvg.push(svgCell);
-    //     svg.appendChild(svgCell);
-    // }
 }
 
 function consumeObjectAtAvatarPosition(list, set) {

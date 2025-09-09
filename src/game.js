@@ -28,7 +28,7 @@ let gameLoop = () => {
 }
 
 setTimeout(() => {
-    //initSound();
+    initSound();
     svg.removeChild(waitScreen);
     displayMenu();
     gameLoop();
